@@ -13,7 +13,9 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.miniivi_dantruong.ui.bluetooth.BluetoothScreen
 import com.example.miniivi_dantruong.ui.bluetooth.BluetoothViewModel
+import com.example.miniivi_dantruong.ui.home.HomeScreen
 import com.example.miniivi_dantruong.ui.media.MediaScreen
 import com.example.miniivi_dantruong.ui.media.MediaViewModel
 
@@ -53,11 +55,21 @@ fun Navigation(navRootController: NavHostController, modifier: Modifier = Modifi
 
     NavHost(
         navController = navRootController,
-        startDestination = Destination.Media.route,
+        startDestination = Destination.Home.route,
         modifier = modifier
     ) {
+      composable(Destination.Home.route) {
+          HomeScreen(
+              mediaViewModel = mediaViewModel,
+              bluetoothViewModel = bluetoothViewModel,
+              navController = navRootController
+          )
+      }
       composable(Destination.Media.route) {
           MediaScreen(viewModel = mediaViewModel)
+      }
+      composable(Destination.Bluetooth.route) {
+          BluetoothScreen(viewModel = bluetoothViewModel)
       }
     }
 }

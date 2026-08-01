@@ -24,17 +24,17 @@ class BluetoothService : Service() {
     private val MY_UUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
 
     companion object {
-        const val ACTION_CONNECT = "com.example.miniivi_dantruong.ACTION_CONNECT"
-        const val ACTION_DISCONNECT = "com.example.miniivi_dantruong.ACTION_DISCONNECT"
-        const val ACTION_SEND = "com.example.miniivi_dantruong.ACTION_SEND"
+        const val ACTION_CONNECT = "ACTION_CONNECT"
+        const val ACTION_DISCONNECT = "ACTION_DISCONNECT"
+        const val ACTION_SEND = "ACTION_SEND"
 
         const val EXTRA_MAC_ADDRESS = "MAC_ADDRESS"
         const val EXTRA_MESSAGE_DATA = "MESSAGE_DATA"
 
-        const val BROADCAST_CONNECTED = "com.example.miniivi_dantruong.BLUETOOTH_CONNECTED"
-        const val BROADCAST_CONNECTION_ERROR = "com.example.miniivi_dantruong.BLUETOOTH_CONNECTION_ERROR"
-        const val BROADCAST_DISCONNECTED = "com.example.miniivi_dantruong.BLUETOOTH_DISCONNECTED"
-        const val BROADCAST_MESSAGE_RECEIVED = "com.example.miniivi_dantruong.BLUETOOTH_MESSAGE_RECEIVED"
+        const val BROADCAST_CONNECTED = "BLUETOOTH_CONNECTED"
+        const val BROADCAST_CONNECTION_ERROR = "BLUETOOTH_CONNECTION_ERROR"
+        const val BROADCAST_DISCONNECTED = "BLUETOOTH_DISCONNECTED"
+        const val BROADCAST_MESSAGE_RECEIVED = "BLUETOOTH_MESSAGE_RECEIVED"
     }
 
     override fun onBind(p0: Intent?): IBinder? = null

@@ -96,7 +96,7 @@ fun SongCard(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Bài hát: ${song.title}",
+                text = "Song: ${song.title}",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
             )
@@ -121,7 +121,7 @@ fun PlayerBottomBar(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = "Đang phát: ${song.title}", // Thay bằng song.title
+            text = "Now Playing: ${song.title}",
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.weight(1f)
         )
