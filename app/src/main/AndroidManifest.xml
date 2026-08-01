@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.example.miniividantruong.service.BluetoothService"
+        <service android:name="com.example.miniivi_dantruong.service.BluetoothService"
             android:exported="false" />
     </application>
 
