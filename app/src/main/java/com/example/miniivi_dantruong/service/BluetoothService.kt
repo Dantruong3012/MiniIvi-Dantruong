@@ -110,9 +110,23 @@ class BluetoothService : Service() {
                 // Start listening for incoming data
                 startReadingData()
             } catch (e: Exception) {
-                Log.e(TAG, "Error connecting to device: ${e.message}")
-                sendBroadcast(Intent(BROADCAST_CONNECTION_ERROR))
-                cleanConnectionResources()
+                Log.e(TAG, "Standard connection failed: ${e.message}. Trying fallback...")
+                try {
+                    // Fallback using reflection to create RFCOMM socket on port 1
+                    val method = device.javaClass.getMethod("createRfcommSocket", Int::class.javaPrimitiveType)
+                    bluetoothSocket = method.invoke(device, 1) as BluetoothSocket
+                    bluetoothAdapter.cancelDiscovery()
+                    bluetoothSocket?.connect()
+                    Log.d(TAG, "Connected via fallback to device: ${device.name}")
+                    sendBroadcast(Intent(BROADCAST_CONNECTED))
+
+                    // Start listening for incoming data
+                    startReadingData()
+                } catch (fallbackException: Exception) {
+                    Log.e(TAG, "Fallback connection also failed: ${fallbackException.message}")
+                    sendBroadcast(Intent(BROADCAST_CONNECTION_ERROR))
+                    cleanConnectionResources()
+                }
             }
         }
     }
