@@ -39,18 +39,24 @@ class BluetoothViewModel @Inject constructor(
     private val _isScanning = MutableStateFlow(false)
     val isScanning = _isScanning.asStateFlow()
 
+    private val _isServerListening = MutableStateFlow(false)
+    val isServerListening = _isServerListening.asStateFlow()
+
     private val bluetoothReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             Log.d(TAG, "Broadcast received action: ${intent?.action}")
             when (intent?.action) {
-                BluetoothService.BROADCAST_CONNECTED -> {
-                    _bluetoothStatus.value = BluetoothStatus.Connected
-                }
                 BluetoothService.BROADCAST_CONNECTION_ERROR -> {
                     _bluetoothStatus.value = BluetoothStatus.Disconnected
+                    _isServerListening.value = false
                 }
                 BluetoothService.BROADCAST_DISCONNECTED -> {
                     _bluetoothStatus.value = BluetoothStatus.Disconnected
+                    _isServerListening.value = false
+                }
+                BluetoothService.BROADCAST_CONNECTED -> {
+                    _bluetoothStatus.value = BluetoothStatus.Connected
+                    _isServerListening.value = false
                 }
                 BluetoothService.BROADCAST_MESSAGE_RECEIVED -> {
                     val message = intent.getStringExtra(BluetoothService.EXTRA_MESSAGE_DATA)
@@ -78,8 +84,29 @@ class BluetoothViewModel @Inject constructor(
                 BluetoothAdapter.ACTION_DISCOVERY_FINISHED -> {
                     _isScanning.value = false
                 }
+                BluetoothService.BROADCAST_SERVER_LISTENING -> {
+                    _isServerListening.value = true
+                }
             }
         }
+    }
+
+    fun startServer() {
+        Log.d(TAG, "Starting server mode")
+        _isServerListening.value = true
+        val intent = Intent(context, BluetoothService::class.java).apply {
+            action = BluetoothService.ACTION_START_SERVER
+        }
+        context.startService(intent)
+    }
+
+    fun stopServer() {
+        Log.d(TAG, "Stopping server mode")
+        _isServerListening.value = false
+        val intent = Intent(context, BluetoothService::class.java).apply {
+            action = BluetoothService.ACTION_STOP_SERVER
+        }
+        context.startService(intent)
     }
 
     fun connectDevice(macAddress: String) {
@@ -153,13 +180,14 @@ class BluetoothViewModel @Inject constructor(
             addAction(BluetoothService.BROADCAST_CONNECTION_ERROR)
             addAction(BluetoothService.BROADCAST_DISCONNECTED)
             addAction(BluetoothService.BROADCAST_MESSAGE_RECEIVED)
+            addAction(BluetoothService.BROADCAST_SERVER_LISTENING)
             addAction(BluetoothDevice.ACTION_FOUND)
             addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED)
             addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
         }
         
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            context.registerReceiver(bluetoothReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+            context.registerReceiver(bluetoothReceiver, filter, Context.RECEIVER_EXPORTED)
         } else {
             context.registerReceiver(bluetoothReceiver, filter)
         }
