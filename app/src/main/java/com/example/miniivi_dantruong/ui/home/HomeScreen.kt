@@ -98,7 +98,7 @@ fun HomeScreen(
                         color = MaterialTheme.colorScheme.onBackground
                     )
 
-                    // Quick Bluetooth status icon in header
+                    // quick Bluetooth status icon in header
                     Icon(
                         imageVector = when (bluetoothStatus) {
                             BluetoothStatus.Connected -> Icons.Default.BluetoothConnected
@@ -117,7 +117,7 @@ fun HomeScreen(
             }
         }
     ) { paddingValues ->
-        // Premium Split Screen Layout (IVI Dashboard style)
+        //  Split creen layout 
         Row(
             modifier = Modifier
                 .padding(paddingValues)
@@ -125,7 +125,7 @@ fun HomeScreen(
                 .padding(horizontal = 24.dp, vertical = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            // Left Half: Media Player Widget
+            // Left Half media Player Widget
             Box(modifier = Modifier.weight(1f)) {
                 MediaWidget(
                     currentSongName = currentSong?.title ?: "No Song Selected",
@@ -139,7 +139,7 @@ fun HomeScreen(
                 )
             }
 
-            // Right Half: Bluetooth Status Widget
+            // Right Half Bluetooth Status Widget
             Box(modifier = Modifier.weight(1f)) {
                 BluetoothWidget(
                     status = bluetoothStatus,
@@ -222,7 +222,7 @@ fun MediaWidget(
                 )
             }
 
-            // Simple playback controls
+            // simple playback controls
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
